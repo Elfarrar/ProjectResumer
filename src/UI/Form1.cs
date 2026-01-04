@@ -5,12 +5,12 @@ namespace UI
 {
     public partial class Form1 : Form
     {
-        private DirectoryInfo? _source;
-        private DirectoryInfo? _output;
-        private List<string>? _extensions;
-        private List<string>? _folders;
-        private int? _filesCount;
-        private int? _foldersCount;
+        private DirectoryInfo _source;
+        private DirectoryInfo _output;
+        private List<string> _extensions;
+        private List<string> _folders;
+        private int _filesCount;
+        private int _foldersCount;
 
         public Form1()
         {
