@@ -16,7 +16,11 @@ namespace UI
         {
             InitializeComponent();
             ChangeStatus(StatusEnum.Ready);
-            
+            txtExtensions.Text = ".cs;.js;.json;.csproj";
+            txtIgnoredFolders.Text = ".git;.github;.vs;bin;obj";
+            pbLoad.Minimum = 1;
+            pbLoad.Value = 1;
+            pbLoad.Step = 1;
         }
 
         private void ChangeStatus(StatusEnum status)
@@ -84,6 +88,8 @@ namespace UI
 
             var files = await GetFiles(_source);
 
+            pbLoad.Maximum = files.Count;
+
             ChangeStatus(StatusEnum.Processing);
 
             await ProccessFiles(files);
@@ -106,7 +112,7 @@ namespace UI
             var folders = directory.GetDirectories().ToList();
             foreach (var folder in folders)
             {
-                await Task.Delay(500);
+                await Task.Delay(250);
                 var files = await GetFiles(folder);
                 if (files != null)
                     csFiles.AddRange(files);
@@ -116,7 +122,7 @@ namespace UI
 
         private async Task ProccessFiles(List<FileInfo> files)
         {
-            var stepBar = files.Count / 100;
+            var stepBar = 100 / files.Count;
             var fileName = Path.Combine(_output.FullName, $"{txtAppName.Text.Replace(' ', '_')}_{DateTime.UtcNow.Ticks}.txt");
 
             FileStream stream = new FileStream(fileName, FileMode.CreateNew);
@@ -134,8 +140,8 @@ namespace UI
 
                 foreach (var file in files)
                 {
+                    pbLoad.PerformStep();
                     await Task.Delay(250);
-                    pbLoad.Step = pbLoad.Step + stepBar;
                     ltbFilesProcessed.Items.Add(file.FullName);
                     //ltbFilesProcessed.SelectedIndex = ltbFilesProcessed.Items.Count - 1;
 
