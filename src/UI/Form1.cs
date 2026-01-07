@@ -122,7 +122,6 @@ namespace UI
 
         private async Task ProccessFiles(List<FileInfo> files)
         {
-            var stepBar = 100 / files.Count;
             var fileName = Path.Combine(_output.FullName, $"{txtAppName.Text.Replace(' ', '_')}_{DateTime.UtcNow.Ticks}.txt");
 
             FileStream stream = new FileStream(fileName, FileMode.CreateNew);
